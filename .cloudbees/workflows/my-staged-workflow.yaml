@@ -3,11 +3,14 @@ kind: workflow
 name: My workflow
 on:
   workflow_dispatch: null
+  schedule:
+    - cron: 5 * * * 5
 metadata:
   stages/v1alpha1:
     - name: Stage 1
       jobs:
         - my-new-job
+        - Man_App
 jobs:
   my-new-job:
     steps:
@@ -15,3 +18,11 @@ jobs:
         uses: docker://golang:1.20.3-alpine3.17
         name: Hello world
         shell: sh
+  Man_App:
+    needs:
+      - my-new-job
+    timeout-minutes: 4320
+    delegates: cloudbees-io/manual-approval/custom-job.yml@v1
+    with:
+      disallowLaunchByUser: false
+      notifyAllEligibleUsers: false
