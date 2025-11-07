@@ -6,6 +6,11 @@ on:
     branches:
       - "**"
   workflow_dispatch:
+  schedule:
+    - cron: 5 * * * 5
+  pull_request:
+    branches:
+      - main
 jobs:
   build:
     steps:
